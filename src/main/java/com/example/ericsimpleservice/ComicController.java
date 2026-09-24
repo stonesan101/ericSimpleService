@@ -1,5 +1,6 @@
 package com.example.ericsimpleservice;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,28 +26,36 @@ public class ComicController {
     }
 
     @GetMapping("/{id}")
-    public Comic getComic(@PathVariable int id) {
-        return comics.stream()
-                .filter(comic -> comic.getId() == id)
-                .findFirst()
-                .orElse(null);
+    public ResponseEntity<Comic> getComic(@PathVariable int id) {
+        for (Comic comic : comics) {
+            if (comic.getId() == id) {
+                return ResponseEntity.ok(comic);
+            }
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public Comic addComic(@RequestBody Comic comic) {
+    public ResponseEntity<Comic> addComic(@RequestBody Comic comic) {
         int newId = comics.size() + 1;
         comic.setId(newId);
         comics.add(comic);
-        return comic;
+        return ResponseEntity.status(201).body(comic);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteComic(@PathVariable int id) {
-        comics.removeIf(comic -> comic.getId() == id);
+    public ResponseEntity<Comic> deleteComic(@PathVariable int id) {
+        for (Comic comic : comics) {
+            if (comic.getId() == id) {
+                comics.remove(comic);
+                return ResponseEntity.noContent().build();
+            }
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/{id}")
-    public Comic updateComic(@PathVariable int id, @RequestBody Comic comic) {
+    public ResponseEntity<Comic> updateComic(@PathVariable int id, @RequestBody Comic comic) {
         for (Comic c : comics) {
             if (c.getId() == id) {
                 c.setTitle(comic.getTitle());
@@ -54,10 +63,10 @@ public class ComicController {
                 c.setAuthor(comic.getAuthor());
                 c.setEdition(comic.getEdition());
                 c.setPrice(comic.getPrice());
-                return c;
+                return ResponseEntity.ok(c);
             }
         }
-        return null;
+        return ResponseEntity.notFound().build();
     }
 
 }
