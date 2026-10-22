@@ -1,21 +1,43 @@
 package com.example.ericsimpleservice;
 
+import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+
+@Entity
+@Table(name = "books")
 public class Book {
-    private int  id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false, length = 200)
     private String title;
+
+    @Column(nullable = false, length = 150)
     private String author;
-    private double price;
-    public Book(int id, String title, String author, double price) {
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
+
+    @Column(name = "image_url", nullable = true, length = 1000)
+    private String image_url;
+
+    public Book() {
+
+    }
+
+    public Book(Long id, String title, String author, BigDecimal price) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.price = price;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getTitle() {
@@ -30,11 +52,17 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+    public String getImage_url() {
+        return image_url;
+    }
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
 }
