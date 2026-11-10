@@ -18,7 +18,7 @@ jobs:
           MYSQL_DATABASE: bookstore
           MYSQL_USER: bookstore_app
           MYSQL_PASSWORD: password01
-          MYSQL_ROOT_PASSWORD: Thevegeto1
+          MYSQL_ROOT_PASSWORD: rootpassword
         ports:
           - 3306:3306
         options: >-
